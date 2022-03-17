@@ -84,9 +84,9 @@ function drawListCard(oList) {
 
   // Relleno con los datos
   pName.innerHTML = oList.display_name;
-  pOldest.innerHTML = `Oldest ${oList.oldest_published_date}`;
-  pNewest.innerHTML = `Newest ${oList.newest_published_date}`;
-  pUpdated.innerHTML = `Updated ${oList.updated}`;
+  pOldest.innerHTML = `Oldest: ${oList.oldest_published_date}`;
+  pNewest.innerHTML = `Newest: ${oList.newest_published_date}`;
+  pUpdated.innerHTML = `Updated: ${oList.updated}`;
   bReadMore.innerHTML = 'Leer más';
 
   // Añado al divCard
