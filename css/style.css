@@ -26,6 +26,10 @@ h1 {
     text-align: center;
 }
 
+h3 {
+    text-align: center;
+}
+
 .list__card {
     display: flex;
     flex-direction: column;
@@ -44,12 +48,15 @@ h1 {
 
 .list__card__oldest,
 .list__card__newest,
-.list__card__updated {
+.list__card__updated,
+.list__card__readmore {
     font-family: var(--ff-terciary);
     margin: 5px 0px;
 }
 
 .list__card__readmore {
+    color: var(--clr-light);
+    background-color: var(--clr-link);
     border: 0px solid transparent;
     border-radius: 25px;
     margin-top: 5px;
