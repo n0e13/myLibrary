@@ -7,7 +7,7 @@
 const apiNYT = config.API_NYT;
 const urlBaseNYT = config.URL_BASE_NYT;
 const urlListNamesNYT = config.URL_LIST_NAMES_NYT;
-const urlBooksOfListNYT = config.URL_BOOKS_OF_LIST_NYT; 
+const urlBooksOfListNYT = config.URL_BOOKS_OF_LIST_NYT;
 
 
 
@@ -80,7 +80,7 @@ function drawListCard(oList) {
   pNewest.setAttribute('class', 'list__card__newest');
   pUpdated.setAttribute('class', 'list__card__updated');
   bReadMore.setAttribute('class', 'list__card__readmore');
-  bReadMore.setAttribute('onClick', `getBooksOfListNYT('${oList.list_name_encoded}')`);
+  bReadMore.setAttribute('onClick', `drawBooksList('${oList.list_name_encoded}')`);
 
   // Relleno con los datos
   pName.innerHTML = oList.display_name;
@@ -103,17 +103,94 @@ function drawListCard(oList) {
 
 
 
+// ************************************************* //
+//                                                   //
+//  Pinto el listado de libros de un tema en el DOM  //
+//                                                   //
+// ************************************************* //
+
+async function drawBooksList(listName) {
+  await getBooksOfListNYT(listName)
+    .then(aListBooks => {
+
+      // Guardo el nodo main donde incluiré las tarjetas
+      //TODO: Llamar al loader
+      let mainNode = document.getElementById('list__names');
+      mainNode.innerHTML = " ";
+
+      for (const book of aListBooks) {
+
+        // Dibujo la tarjeta
+        let bookCard = drawBookCard(book);
+
+        // La añado al main
+        mainNode.appendChild(bookCard);
+      }
+    });
+}
+
+
+
+
+// *************************************** //
+//                                         //
+//  Creo la tarjeta de un libro en el DOM  //
+//                                         //
+// *************************************** //
+
+function drawBookCard(oBook) {
+  // TODO: Falta añadir el título de la lista y el botón volver que recarga el DOM
+  let divCard = document.createElement('div');
+  divCard.setAttribute('class', 'book__card');
+
+  // Creo los elementos
+  let pRankName = document.createElement('p');
+  let imgCover = document.createElement('img');
+  let pWeeks = document.createElement('p');
+  let pDescription = document.createElement('p');
+  let bAmazon = document.createElement('button');
+
+  // Agrego los atributos
+  pRankName.setAttribute('class', 'book__card__rankname');
+  imgCover.setAttribute('class', 'book__card__cover');
+  pWeeks.setAttribute('class', 'book__card__weeks');
+  pDescription.setAttribute('class', 'book__card__description');
+  bAmazon.setAttribute('class', 'book__card__readmore');
+  // TODO: cambiar la función window.location = url;  window.open(url);
+  //bAmazon.setAttribute('onClick', `drawBooksList('${oList.list_name_encoded}')`);
+
+  // Relleno con los datos
+  pRankName.innerHTML = `#${oBook.rank} ${oBook.book_details[0].title}`;
+  imgCover.innerHTML = ` img`;
+  pWeeks.innerHTML = `Weeks on list: ${oBook.weeks_on_list}`;
+  pDescription.innerHTML = `${oBook.book_details[0].description}`;
+  bAmazon.innerHTML = '<i class="fab fa-amazon"></i>';
+
+  // Añado al divCard
+  divCard.appendChild(pRankName);
+  divCard.appendChild(imgCover);
+  divCard.appendChild(pWeeks);
+  divCard.appendChild(pDescription);
+  divCard.appendChild(bAmazon);
+
+  return divCard;
+}
+
+
+
+
+
+
 // ************************************ //
 //                                      //
 //  Libros de un listado de la API NYT  //
 //                                      //
 // ************************************ //
-// TODO_ hacerlo como el listado, llamar a una función que dibuje tras recibir el resultado del fetch
+
 async function getBooksOfListNYT(listName) {
   try {
     let response = await fetch(`${urlBaseNYT}.json${apiNYT}${urlBooksOfListNYT}${listName}`);
     let data = await response.json();
-    // TODO: Aquí no devuelve, lo envía a dibujar
     return data.results;
   } catch (error) {
     console.log(`ERROR: ${error.stack}`);
