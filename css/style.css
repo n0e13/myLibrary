@@ -23,7 +23,6 @@ main {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    flex-wrap: wrap;
     padding: 1em 0em;
 }
 
@@ -186,5 +185,29 @@ h3 {
 
     50% {
         transform: scale(1.5);
+    }
+}
+
+
+/* ------------- */
+/* Media queries */
+/* ------------- */
+
+@media screen and (min-width: 748px) {
+    :root {
+        --fs-h1: 4rem;
+        --fs-h2: 3.75rem;
+        --fs-h3: 1.5rem;
+        --fs-body: 1.125rem;
+    }
+
+    main {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .list__card,
+    .book__card {
+        flex-basis: 20%;
     }
 }
