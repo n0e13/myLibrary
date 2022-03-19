@@ -39,6 +39,13 @@ async function drawListNames() {
     .then(aListNames => {
       showHideLoader(true);
 
+      let headerNode = document.getElementById('header');
+      headerNode.innerHTML = "";
+
+      let titleNode = document.createElement('h1');
+      titleNode.innerHTML = "Leer da sueños";
+      headerNode.appendChild(titleNode);
+
       // Guardo el nodo main donde incluiré las tarjetas
       let mainNode = document.getElementById('list__names');
       mainNode.innerHTML = " ";
@@ -117,18 +124,21 @@ async function drawBooksList(listName) {
     .then(aListBooks => {
       showHideLoader(true);
 
-      // Guardo el nodo main donde incluiré las tarjetas
-      let mainNode = document.getElementById('list__names');
-      mainNode.innerHTML = " ";
+      // Guardo el nodo header para añadir el título y botón volver
+      let headerNode = document.getElementById('header');
 
       let listNode = document.createElement('h1');
       listNode.innerHTML = sDisplayName;
-      mainNode.appendChild(listNode);
+      headerNode.appendChild(listNode);
 
       let bBackNode = document.createElement('button');
       bBackNode.setAttribute('onClick', 'drawListNames()');
       bBackNode.innerHTML = "Back to list";
-      mainNode.appendChild(bBackNode);
+      headerNode.appendChild(bBackNode);
+
+      // Guardo el nodo main donde incluiré las tarjetas
+      let mainNode = document.getElementById('list__names');
+      mainNode.innerHTML = " ";
 
       for (const book of aListBooks) {
 
