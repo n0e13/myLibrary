@@ -41,6 +41,7 @@ async function drawListNames() {
 
       // Guardo el nodo main donde incluiré las tarjetas
       let mainNode = document.getElementById('list__names');
+      mainNode.innerHTML = " ";
 
       for (const list of aListNames) {
 
@@ -109,14 +110,25 @@ function drawListCard(oList) {
 //                                                   //
 // ************************************************* //
 
+let sDisplayName = "";
 async function drawBooksList(listName) {
+
   await getBooksOfListNYT(listName)
     .then(aListBooks => {
+      showHideLoader(true);
 
       // Guardo el nodo main donde incluiré las tarjetas
-      //TODO: Llamar al loader
       let mainNode = document.getElementById('list__names');
       mainNode.innerHTML = " ";
+
+      let listNode = document.createElement('h1');
+      listNode.innerHTML = sDisplayName;
+      mainNode.appendChild(listNode);
+
+      let bBackNode = document.createElement('button');
+      bBackNode.setAttribute('onClick', 'drawListNames()');
+      bBackNode.innerHTML = "Back to list";
+      mainNode.appendChild(bBackNode);
 
       for (const book of aListBooks) {
 
@@ -139,7 +151,6 @@ async function drawBooksList(listName) {
 // *************************************** //
 
 function drawBookCard(oBook) {
-  // TODO: Falta añadir el título de la lista y el botón volver que recarga el DOM
   let divCard = document.createElement('div');
   divCard.setAttribute('class', 'book__card');
 
@@ -153,18 +164,17 @@ function drawBookCard(oBook) {
   // Agrego los atributos
   pRankName.setAttribute('class', 'book__card__rankname');
   imgCover.setAttribute('class', 'book__card__cover');
+  imgCover.setAttribute('src', `${oBook.book_image}`);
   pWeeks.setAttribute('class', 'book__card__weeks');
   pDescription.setAttribute('class', 'book__card__description');
-  bAmazon.setAttribute('class', 'book__card__readmore');
-  // TODO: cambiar la función window.location = url;  window.open(url);
-  //bAmazon.setAttribute('onClick', `drawBooksList('${oList.list_name_encoded}')`);
+  bAmazon.setAttribute('class', 'book__card__amazon');
+  bAmazon.setAttribute('onClick', `window.open('${oBook.amazon_product_url}')`);
 
   // Relleno con los datos
-  pRankName.innerHTML = `#${oBook.rank} ${oBook.book_details[0].title}`;
-  imgCover.innerHTML = ` img`;
+  pRankName.innerHTML = `#${oBook.rank} ${oBook.title}`;
   pWeeks.innerHTML = `Weeks on list: ${oBook.weeks_on_list}`;
-  pDescription.innerHTML = `${oBook.book_details[0].description}`;
-  bAmazon.innerHTML = '<i class="fab fa-amazon"></i>';
+  pDescription.innerHTML = `${oBook.description}`;
+  bAmazon.innerHTML = 'Buy me in <i class="fab fa-amazon"></i>';
 
   // Añado al divCard
   divCard.appendChild(pRankName);
@@ -189,9 +199,11 @@ function drawBookCard(oBook) {
 
 async function getBooksOfListNYT(listName) {
   try {
-    let response = await fetch(`${urlBaseNYT}.json${apiNYT}${urlBooksOfListNYT}${listName}`);
+    showHideLoader(false);
+    let response = await fetch(`${urlBaseNYT}${urlBooksOfListNYT}${listName}.json${apiNYT}`);
     let data = await response.json();
-    return data.results;
+    sDisplayName = data.results.display_name;
+    return data.results.books;
   } catch (error) {
     console.log(`ERROR: ${error.stack}`);
   }
@@ -209,6 +221,7 @@ async function getBooksOfListNYT(listName) {
 
 async function getListNamesNYT() {
   try {
+    showHideLoader(false);
     let response = await fetch(`${urlBaseNYT}${urlListNamesNYT}${apiNYT}`);
     let data = await response.json();
     return data.results //[]
@@ -230,9 +243,11 @@ async function getListNamesNYT() {
 function showHideLoader(visible) {
   if (!visible) {
     document.getElementById("list__names").style.visibility = "hidden";
+    document.getElementById("loader").style.display = "";
     document.getElementById("loader").style.visibility = "visible";
   } else {
     document.getElementById("loader").style.display = "none";
     document.getElementById("list__names").style.visibility = "visible";
   }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
