@@ -19,11 +19,18 @@
     --fs-small: 0.75rem;
 }
 
+
+header {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
 main {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    padding: 1em 0em;
 }
 
 h1 {
@@ -74,21 +81,43 @@ h3 {
 }
 
 .list__card__readmore,
-.book__card__amazon {
+.book__card__amazon,
+.btn__back {
     color: var(--clr-light);
-    background-color: var(--clr-link);
     border: 0px solid transparent;
     border-radius: 25px;
     margin-top: 5px;
     padding: 5px;
-    width: 75%;
     font-size: var(--fs-body);
+}
+
+.list__card__readmore,
+.book__card__amazon {
+    background-color: var(--clr-link);
+    width: 75%;
+}
+
+
+.btn__back {
+    background-color: var(--clr-accent);
+    width: 35%;
+}
+
+.title__list__book {
+    font-size: var(--fs-h3);
+    margin: 20px;
 }
 
 
 /* ------ */
 /* Loader */
 /* ------ */
+
+#loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .lds-default {
     display: inline-block;
