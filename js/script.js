@@ -19,9 +19,9 @@ const urlBooksOfListNYT = config.URL_BOOKS_OF_LIST_NYT;
 //          //
 // ******** //
 
-if (document.getElementById('loader') != null) {
-  drawListNames();
-}
+
+drawListNames();
+
 
 
 
@@ -35,16 +35,20 @@ if (document.getElementById('loader') != null) {
 // **************************** //
 
 async function drawListNames() {
+  let headerNode = document.getElementById('header');
+  headerNode.innerHTML = "";
+
+  let titleNode = document.createElement('h1');
+  titleNode.innerHTML = "Leer da sueños";
+  headerNode.appendChild(titleNode);
+
   await getListNamesNYT()
     .then(aListNames => {
       showHideLoader(true);
 
-      let headerNode = document.getElementById('header');
-      headerNode.innerHTML = "";
 
-      let titleNode = document.createElement('h1');
-      titleNode.innerHTML = "Leer da sueños";
-      headerNode.appendChild(titleNode);
+
+
 
       // Guardo el nodo main donde incluiré las tarjetas
       let mainNode = document.getElementById('list__names');
@@ -127,13 +131,15 @@ async function drawBooksList(listName) {
       // Guardo el nodo header para añadir el título y botón volver
       let headerNode = document.getElementById('header');
 
-      let listNode = document.createElement('h1');
-      listNode.innerHTML = sDisplayName;
+      let listNode = document.createElement('p');
+      listNode.setAttribute('class', 'title__list__book');
+      listNode.innerHTML = `Libros de la sección <strong>${sDisplayName}</strong>`;
       headerNode.appendChild(listNode);
 
       let bBackNode = document.createElement('button');
+      bBackNode.setAttribute('class', 'btn__back');
       bBackNode.setAttribute('onClick', 'drawListNames()');
-      bBackNode.innerHTML = "Back to list";
+      bBackNode.innerHTML = "Back to the list";
       headerNode.appendChild(bBackNode);
 
       // Guardo el nodo main donde incluiré las tarjetas
